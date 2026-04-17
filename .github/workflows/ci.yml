@@ -1,0 +1,62 @@
+name: CI - Lint & Build
+
+on:
+  push:
+    branches: ["dev"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  backend:
+    name: Backend - Python Lint & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install backend dependencies
+        working-directory: backend_api
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff pytest
+
+      - name: Lint backend with Ruff
+        working-directory: backend_api
+        run: ruff check .
+
+      - name: Run backend tests (if present)
+        working-directory: backend_api
+        run: |
+          if [ -d "tests" ]; then pytest -q; else echo "No tests directory, skipping"; fi
+
+  frontend:
+    name: Frontend - Vue Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Install frontend dependencies
+        working-directory: solar-dashboard
+        run: npm install
+
+      - name: Lint frontend
+        working-directory: solar-dashboard
+        run: npm run lint --if-present
+
+      - name: Build frontend
+        working-directory: solar-dashboard
+        run: npm run build
