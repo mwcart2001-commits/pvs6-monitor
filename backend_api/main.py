@@ -3,8 +3,16 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .queries import get_latest_system, get_latest_panels
 from .models import SystemSnapshot, PanelSnapshot, DayHistory
+from .health import router as health_router
+
+from .queries import get_day_history
+from .queries import get_day_history, get_hourly_history
+
 
 app = FastAPI(title="PVS6 Solar API")
+
+app.include_router(health_router)
+
 
 def compute_panel_scores(panels):
     # Group by row (R1, R2)
@@ -26,15 +34,18 @@ def compute_panel_scores(panels):
             # Health Score (relative)
             health_score = p.ac_kw / median_ac if median_ac > 0 else 0
 
-            # Normalized Output (AC / V*I), but only when producing
-            if p.dc_kw > 0.1:
-                denom = p.vdc * p.idc
-                normalized = p.ac_kw / denom if denom > 0 else 0
-            else:
-                normalized = 1.0
+            # Normalized Output (AC / V*I), but only when producing - this was not working it may have been a unit issue, removed for now 2026/3/31
+            #if p.dc_kw > 0.1:
+            #    denom = p.vdc * p.idc
+            #    normalized = p.ac_kw / denom if denom > 0 else 0
+            #else:
+            #    normalized = 1.0
 
             # Combined Score
-            combined = 0.6 * health_score + 0.4 * normalized
+            #combined = 0.6 * health_score + 0.4 * normalized
+            normalized = 1.0
+
+            combined = 1 * health_score
 
             # Status color
             if combined >= 0.95:
@@ -76,6 +87,10 @@ def api_panels():
 
     return panels
 
-# @app.get("/api/history/day", response_model=DayHistory)
-# def api_history_day(date: str):
-#     return get_day_history(date)
+@app.get("/api/history/day")
+def api_history_day(date: str):
+    return get_day_history(date)
+
+@app.get("/api/history/day/hourly")
+def api_history_day_hourly(date: str):
+    return get_hourly_history(date)

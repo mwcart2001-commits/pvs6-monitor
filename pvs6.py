@@ -40,6 +40,7 @@ Dependencies:
   pip install requests
 """
 
+# import systemd.daemon
 import argparse
 import base64
 import json
@@ -712,8 +713,14 @@ def cmd_collect(client: PVS6Client, db_path: str, interval: int) -> None:
     print("Press Ctrl-C to stop.\n")
 
     consecutive_errors = 0
-
+ 
     while True:
+        start_time = time.time()   # mark loop start
+        
+        # watchdog added 04/06/2026
+        
+        #systemd.daemon.notify("WATCHDOG=1")
+
         try:
             r = client.get_readings()
             store_reading(conn, r)
@@ -750,10 +757,16 @@ def cmd_collect(client: PVS6Client, db_path: str, interval: int) -> None:
             print("\nStopped.")
             break
 
-        time.sleep(interval)
+        # --- Stable interval timing ---
+        elapsed = time.time() - start_time
+        sleep_time = max(0, interval - elapsed)
+        
+        print(f"Loop duration: {elapsed:.2f}s, sleeping {sleep_time:.2f}s")
+        
+        time.sleep(sleep_time)
 
     conn.close()
-
+    
 def cmd_panels(client: PVS6Client) -> None:
     """Print a live table of per-panel inverter readings."""
     client.connect()
