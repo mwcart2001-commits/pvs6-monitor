@@ -1,5 +1,5 @@
 import sqlite3
-from .models import SystemSnapshot, PanelSnapshot
+from .models import SystemSnapshot
 from datetime import datetime, timedelta
 
 

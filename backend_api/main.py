@@ -1,13 +1,15 @@
-from .queries import get_latest_system, get_latest_panels
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .queries import get_latest_system, get_latest_panels
-from .models import SystemSnapshot, PanelSnapshot, DayHistory
+
+from .queries import (
+    get_latest_system,
+    get_latest_panels,
+    get_day_history,
+    get_hourly_history,
+)
+
+from .models import SystemSnapshot, PanelSnapshot
 from .health import router as health_router
-
-from .queries import get_day_history
-from .queries import get_day_history, get_hourly_history
-
 
 app = FastAPI(title="PVS6 Solar API")
 
