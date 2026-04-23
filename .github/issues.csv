@@ -1,0 +1,81 @@
+title,body,labels,priority,Epic
+Add dashboard layout framework,"Create the base layout for the dashboard, including header, sidebar, and main content area. Ensure responsive design and clean structure.",dashboard,P0,Dashboard UI
+Add system overview card,"Create a top-level system overview card showing current power, daily energy, system status, and last update timestamp.",dashboard,P1,Dashboard UI
+Add panel grid view,Implement a grid-based visualization of all solar panels using the row/column naming scheme. Include per-panel status and power output.,dashboard,P1,Dashboard UI
+Add daily production chart,Add a chart showing today's production curve using aggregated data. Include tooltips and hover interactions.,dashboard,P1,Dashboard UI
+Add historical energy charts,"Implement charts for daily, weekly, and monthly energy summaries. Use cached/aggregated data for fast loading.",dashboard,P2,Dashboard UI
+Add system status indicators,"Display collector status, backup status, disk usage, and time sync health using color-coded indicators.",dashboard,P2,Dashboard UI
+Add settings menu,"Create a settings menu with navigation to configuration editor, theme options, and system info.",dashboard,P3,Dashboard UI
+Add dark mode toggle,Implement a dark/light mode toggle with persistent user preference storage.,dashboard,P3,Dashboard UI
+Add mobile-responsive layout,Ensure the dashboard works cleanly on mobile devices with collapsible menus and adaptive charts.,dashboard,P2,Dashboard UI
+Add error and offline states,"Design UI states for when the backend is unreachable, collector is offline, or data is missing.",dashboard,P1,Dashboard UI
+Create systemd service for collector,Create a systemd service unit to run the collector automatically on boot. Ensure restart policies and logging are configured.,systemd,P0,Systemd Services
+Create systemd service for backend API,Add a systemd service to run the FastAPI backend on boot with automatic restarts and proper logging.,systemd,P0,Systemd Services
+Add systemd timer for nightly backups,Create a systemd timer and service pair to run nightly database backups. Ensure logs are captured and failures are reported.,systemd,P1,Systemd Services
+Add systemd watchdog for collector,Enable systemd watchdog functionality to detect collector hangs or freezes. Configure heartbeat interval and restart behavior.,systemd,P1,Systemd Services
+Add systemd watchdog for backend,Enable watchdog monitoring for the FastAPI backend to detect hangs and automatically restart the service.,systemd,P2,Systemd Services
+Add journald log rotation rules,"Configure journald to rotate logs for collector, backend, and backup services to prevent disk overuse.",systemd,P2,Systemd Services
+Add systemctl status endpoint integration,"Expose systemd service health (active, failed, restarting) through a backend API endpoint for dashboard display.",systemd,P2,Systemd Services
+Add systemd environment file support,Create environment files for collector and backend services to allow configuration overrides without editing unit files.,systemd,P3,Systemd Services
+Add systemd reload support for config changes,"Enable `systemctl reload` behavior for services that support hot‑reload, ensuring config updates apply without restart.",systemd,P3,Systemd Services
+Add systemd service dependency graph,"Define proper `After=`, `Requires=`, and `Wants=` relationships so services start in the correct order and recover gracefully.",systemd,P1,Systemd Services
+Add GitHub Actions workflow for backend tests,Create a GitHub Actions workflow to run backend unit tests on every push and pull request. Include Python version matrix and caching.,ci-cd,P0,CI/CD
+Add GitHub Actions workflow for dashboard build,Set up a workflow to build the dashboard UI on every push. Ensure Node dependencies are cached and build artifacts are validated.,ci-cd,P1,CI/CD
+Add linting workflow for Python and JavaScript,Add a CI workflow that runs flake8/black for Python and ESLint/prettier for JavaScript. Fail builds on lint errors.,ci-cd,P1,CI/CD
+Add automated Docker image build,Create a workflow to build Docker images for backend and collector on tagged releases. Push images to GitHub Container Registry.,ci-cd,P2,CI/CD
+Add automated deployment workflow,Set up a workflow that deploys the backend to the Raspberry Pi or remote server using SSH or rsync on release tags.,ci-cd,P2,CI/CD
+Add database migration check,Add a CI step that verifies database schema migrations apply cleanly and do not break existing data.,ci-cd,P2,CI/CD
+Add test coverage reporting,Integrate coverage.py and frontend coverage tools. Upload coverage reports to GitHub Actions summary.,ci-cd,P3,CI/CD
+Add dependency vulnerability scanning,Enable Dependabot or GitHub Advanced Security to scan Python and Node dependencies for vulnerabilities.,ci-cd,P1,CI/CD
+Add workflow to validate systemd unit files,Create a CI job that validates systemd unit files for syntax correctness and required fields.,ci-cd,P3,CI/CD
+Add release notes automation,Automatically generate release notes from merged PRs using GitHub’s release automation tools.,ci-cd,P2,CI/CD
+Add centralized configuration file,"Create a single configuration file (YAML or TOML) that defines all tunable system parameters including collector settings, backup paths, thresholds, and dashboard options.",config,P0,Configuration System
+Add configuration loader module,"Implement a Python module to load, validate, and expose configuration values to the collector and backend. Include schema validation.",config,P1,Configuration System
+Add hot‑reload support for configuration,Enable the backend to reload configuration without restarting the service. Provide an endpoint or signal‑based trigger.,config,P2,Configuration System
+Add configuration editor UI,Add a dashboard page that allows editing configuration values with validation and save/apply controls.,config,P2,Configuration System
+Add configuration versioning and rollback,Store configuration history and allow rollback to previous versions. Include timestamps and change summaries.,config,P3,Configuration System
+Add per‑panel performance analytics,Implement analytics to compare each panel’s performance over time. Identify underperforming panels and calculate deviation from expected output.,analytics,P1,Analytics
+Add daily energy summary computation,Create a backend job to compute daily energy totals and store them in an aggregated table for fast dashboard loading.,analytics,P0,Analytics
+Add system efficiency metrics,"Calculate system‑level efficiency metrics such as performance ratio, inverter efficiency, and expected vs. actual generation.",analytics,P2,Analytics
+Add anomaly detection for panel output,"Implement anomaly detection to flag panels with sudden drops, flatlines, or unusual patterns. Expose results via API.",analytics,P2,Analytics
+Add long‑term trends and insights,"Generate weekly, monthly, and seasonal insights. Include trends, averages, and year‑over‑year comparisons.",analytics,P3,Analytics
+Add low‑output alerting,Trigger alerts when a panel or the entire system produces significantly less power than expected. Include thresholds and hysteresis.,alerts,P1,Alerts
+Add offline panel detection,Detect when a panel stops reporting data and generate an alert with timestamp and panel identifier.,alerts,P0,Alerts
+Add collector failure alerts,"Generate alerts when the collector service crashes, hangs, or stops sending data. Integrate with systemd watchdog.",alerts,P0,Alerts
+Add backup failure alerts,"Trigger alerts when nightly backups fail, run late, or produce corrupted output. Include log excerpts.",alerts,P2,Alerts
+Add alert history and acknowledgment,"Store alert history and allow users to acknowledge, silence, or clear alerts through the dashboard.",alerts,P3,Alerts
+Add system architecture documentation,"Create a high‑level architecture document describing data flow, collector behavior, backend API structure, and dashboard components.",documentation,P1,Documentation
+Add installation and setup guide,"Write a step‑by‑step guide for installing the system on a Raspberry Pi or server, including dependencies, environment setup, and service installation.",documentation,P0,Documentation
+Add API reference documentation,"Document all backend API endpoints, including request/response formats, authentication (if any), and example payloads.",documentation,P1,Documentation
+Add troubleshooting guide,"Create a troubleshooting guide covering common issues such as collector failures, systemd errors, missing data, and dashboard loading problems.",documentation,P2,Documentation
+Add contributor guide,"Write a contributor guide including coding standards, branching strategy, testing requirements, and how to run the system locally.",documentation,P3,Documentation
+Add nightly backup job,Create a nightly backup job that exports the SQLite database and raw data files. Ensure backups run reliably and produce timestamped files.,backup,P0,Backup System
+Add backup compression,Compress backup files using gzip or zstd to reduce storage usage. Validate integrity after compression.,backup,P1,Backup System
+Add backup retention policy,Implement a retention policy that automatically deletes backups older than a configurable number of days.,backup,P1,Backup System
+Add backup integrity checker,Create a script that verifies backup file integrity and logs any corruption or incomplete files.,backup,P2,Backup System
+Add backup restore script,Implement a restore script that can rebuild the database from a backup file. Include safety checks and confirmation prompts.,backup,P0,Backup System
+Add backup location configuration,Allow backup destination paths to be configured via the central configuration file. Support local and external storage.,backup,P2,Backup System
+Add backup status API endpoint,"Expose backup status, last run time, and last success/failure via a backend API endpoint.",backup,P3,Backup System
+Add dashboard backup status card,"Create a dashboard card showing last backup time, success/failure state, and next scheduled run.",backup,P3,Backup System
+Add backup failure alerting,"Trigger alerts when backups fail, run late, or produce corrupted output. Include log excerpts.",backup,P0,Backup System
+Add backup log rotation,Ensure backup logs are rotated and archived to prevent excessive disk usage.,backup,P2,Backup System
+Add collector service to read panel data,"Implement the collector that reads power, voltage, and current data from each panel. Ensure reliable polling and error handling.",collector,P0,Collector
+Add data validation for collector,"Validate incoming panel data for missing fields, out‑of‑range values, and malformed packets. Log and discard invalid entries.",collector,P1,Collector
+Add collector retry and backoff logic,Implement retry logic with exponential backoff when panels fail to respond. Avoid overwhelming the system with rapid retries.,collector,P1,Collector
+Add collector logging,"Add structured logging for collector operations including polling cycles, failures, retries, and data anomalies.",collector,P2,Collector
+Add collector metrics endpoint,"Expose collector metrics such as poll duration, success rate, and error counts via a backend API endpoint.",collector,P2,Collector
+Add collector configuration support,"Allow collector behavior (poll interval, timeouts, panel list) to be configured via the central configuration file.",collector,P3,Collector
+Add collector offline detection,Detect when a panel stops responding and mark it as offline. Provide timestamps and error codes.,collector,P0,Collector
+Add collector performance optimization,Optimize collector loops to reduce CPU usage and improve timing accuracy. Consider async or multiprocessing.,collector,P3,Collector
+Add collector unit tests,"Write unit tests for collector modules including parsing, validation, retry logic, and error handling.",collector,P2,Collector
+Add collector integration tests,"Create integration tests that simulate panel responses, timeouts, and malformed data to validate end‑to‑end behavior.",collector,P3,Collector
+Add FastAPI endpoint for current system data,"Create an endpoint that returns current system metrics including power, energy, panel status, and timestamps. Ensure fast response time.",backend,P0,FastAPI Backend
+Add FastAPI endpoint for historical data,Implement an endpoint to return historical energy and power data with filtering by date range. Optimize for large datasets.,backend,P1,FastAPI Backend
+Add database models for panel data,"Create SQLAlchemy models for panel readings, system metrics, and aggregated summaries. Include indexes for performance.",backend,P1,FastAPI Backend
+Add data ingestion endpoint,Add an endpoint for the collector to push panel data. Validate payloads and store records efficiently.,backend,P0,FastAPI Backend
+Add authentication support,Implement optional API authentication using tokens or API keys. Allow enabling/disabling via configuration.,backend,P2,FastAPI Backend
+Add backend caching layer,Add caching for frequently accessed endpoints such as current system status and daily summaries to reduce database load.,backend,P2,FastAPI Backend
+Add backend health check endpoint,Create a lightweight health check endpoint for systemd and monitoring tools to verify backend availability.,backend,P3,FastAPI Backend
+Add error handling middleware,Implement global exception handlers to return structured error responses and log stack traces.,backend,P3,FastAPI Backend
+Add backend unit tests,"Write unit tests for API routes, models, and utility functions. Include mocks for database and caching layers.",backend,P2,FastAPI Backend
+Add backend integration tests,"Create integration tests that validate end‑to‑end behavior including data ingestion, querying, and error scenarios.",backend,P3,FastAPI Backend

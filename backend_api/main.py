@@ -96,3 +96,12 @@ def api_history_day(date: str):
 @app.get("/api/history/day/hourly")
 def api_history_day_hourly(date: str):
     return get_hourly_history(date)
+    
+@app.get("/mode")
+def get_mode():
+    try:
+        with open("/home/pi/pvs6-monitor/mode", "r") as f:
+            return {"mode": f.read().strip()}
+    except (FileNotFoundError, OSError):
+        return {"mode": "unknown"}
+

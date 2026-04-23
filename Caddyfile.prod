@@ -1,0 +1,5 @@
+:80 {
+    root * /home/pi/pvs6-monitor/solar-dashboard/dist
+    file_server
+    try_files {path} /index.html
+}
