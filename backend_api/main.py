@@ -102,6 +102,6 @@ def get_mode():
     try:
         with open("/home/pi/pvs6-monitor/mode", "r") as f:
             return {"mode": f.read().strip()}
-    except:
+    except (FileNotFoundError, OSError):
         return {"mode": "unknown"}
 
