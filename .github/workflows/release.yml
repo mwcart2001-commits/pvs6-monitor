@@ -1,0 +1,14 @@
+name: Release
+
+on:
+  push:
+    branches: ["dev"]
+  pull_request:
+    branches: ["dev"]
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release placeholder
+        run: echo "Release workflow placeholder — passing check."

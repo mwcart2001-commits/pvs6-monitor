@@ -1,0 +1,14 @@
+name: Deploy
+
+on:
+  push:
+    branches: ["dev"]
+  pull_request:
+    branches: ["dev"]
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment placeholder
+        run: echo "Deploy workflow placeholder — passing check."
