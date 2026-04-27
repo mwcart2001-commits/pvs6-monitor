@@ -23,7 +23,6 @@ onMounted(async () => {
 // Commenting out this entire older section for now
 <!--
 <template>
-  <!-- ⭐ Mode Badge -->
   <div class="mode-badge" :class="mode">
     {{ mode.toUpperCase() }} MODE
   </div>
