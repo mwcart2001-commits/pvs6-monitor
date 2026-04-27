@@ -2,6 +2,7 @@ import sqlite3
 from .models import SystemSnapshot
 from datetime import datetime, timedelta
 
+from .models import PanelSnapshot
 
 DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
 
@@ -178,3 +179,27 @@ def get_hourly_history(date_str: str):
         "consumption_kwh": [round(v, 3) for v in hourly_cons],
         "net_kwh": [round(v, 3) for v in hourly_net]
     }
+
+from .models import PanelSnapshot
+
+def get_merged_system_snapshot():
+    """
+    Returns a combined structure containing:
+    - latest system metrics (SystemSnapshot)
+    - latest panel metrics (list[PanelSnapshot])
+    """
+
+    system = get_latest_system()
+    panels_raw = get_latest_panels()
+
+    if system is None:
+        return None
+
+    # Convert DB rows → PanelSnapshot objects
+    panels = [PanelSnapshot(**dict(row)) for row in panels_raw]
+
+    return {
+        "system": system,
+        "panels": panels
+    }
+
