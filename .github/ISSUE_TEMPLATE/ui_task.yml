@@ -1,0 +1,47 @@
+name: "UI Task"
+description: "Create a frontend/UI task"
+title: "UI: <short description>"
+labels: ["ui"]
+projects: ["<your-org>/<your-project>"]
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: "Summary"
+      placeholder: "What UI component or page needs to be built?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: design
+    attributes:
+      label: "Design / Layout"
+      description: "Describe the UI structure, components, and interactions"
+      placeholder: "- Component structure\n- Layout\n- States"
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: "Requirements"
+      placeholder: "- Requirement 1\n- Requirement 2"
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Acceptance Criteria"
+      placeholder: "- AC 1\n- AC 2"
+
+  - type: input
+    id: feature
+    attributes:
+      label: "Feature"
+      placeholder: "Which feature does this UI task support?"
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority"
+      options:
+        - High
+        - Medium
+        - Low
