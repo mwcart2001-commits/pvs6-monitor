@@ -20,9 +20,9 @@ onMounted(async () => {
 });
 </script>
 
-// Commenting out this entire older section for now
 
 <template>
+// Commenting out this entire older section for now
   <!--
   <div class="mode-badge" :class="mode">
     {{ mode.toUpperCase() }} MODE
@@ -30,7 +30,7 @@ onMounted(async () => {
 
   <div class="p-6 space-y-6">
 
-    <!-- Toggle Buttons -->
+    // Toggle Buttons 
     <div class="flex gap-3 mb-4">
       <button
         @click="view = 'power'"
