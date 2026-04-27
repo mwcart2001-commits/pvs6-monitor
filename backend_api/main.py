@@ -15,6 +15,8 @@ from fastapi import HTTPException
 from datetime import datetime
 from .health import get_backend_health, get_collector_health
 
+from .queries import get_merged_system_snapshot
+
 app = FastAPI(title="PVS6 Solar API")
 
 app.include_router(health_router)
@@ -106,14 +108,16 @@ def api_history_day_hourly(date: str):
 @app.get("/api/system/current")
 def api_system_current():
     try:
-        system = get_latest_system()
-        panels_raw = get_latest_panels()
+        # Use the new merged service function
+        merged = get_merged_system_snapshot()
 
-        if system is None:
+        if merged is None:
             raise HTTPException(status_code=500, detail="No system data available")
 
-        panels = [PanelSnapshot(**dict(row)) for row in panels_raw]
+        system = merged["system"]
+        panels = merged["panels"]
 
+        # Build the unified snapshot
         snapshot = {
             "system": {
                 "production_kw": system.production_kw,
@@ -142,7 +146,10 @@ def api_system_current():
         return snapshot
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to build system snapshot: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to build system snapshot: {e}"
+        )
 
 @app.get("/mode")
 def get_mode():
