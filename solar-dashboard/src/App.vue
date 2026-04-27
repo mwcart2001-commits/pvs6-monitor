@@ -57,7 +57,7 @@ onMounted(async () => {
       </button>
     </div>
 
-    <!-- Chart Display -->
+    // Chart Display
     <div>
       <DailyChart v-if="view === 'power'" />
       <DailyHourlyChart v-if="view === 'hourly'" />
