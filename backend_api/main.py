@@ -11,6 +11,10 @@ from .queries import (
 from .models import SystemSnapshot, PanelSnapshot
 from .health import router as health_router
 
+from fastapi import HTTPException
+from datetime import datetime
+from .health import get_backend_health, get_collector_health
+
 app = FastAPI(title="PVS6 Solar API")
 
 app.include_router(health_router)
@@ -96,7 +100,50 @@ def api_history_day(date: str):
 @app.get("/api/history/day/hourly")
 def api_history_day_hourly(date: str):
     return get_hourly_history(date)
-    
+
+# Added 4/26/2-026 to support new feature Current System Page
+
+@app.get("/api/system/current")
+def api_system_current():
+    try:
+        system = get_latest_system()
+        panels_raw = get_latest_panels()
+
+        if system is None:
+            raise HTTPException(status_code=500, detail="No system data available")
+
+        panels = [PanelSnapshot(**dict(row)) for row in panels_raw]
+
+        snapshot = {
+            "system": {
+                "production_kw": system.production_kw,
+                "consumption_kw": system.consumption_kw,
+                "grid_kw": system.grid_kw,
+                "timestamp": datetime.utcnow().isoformat()
+            },
+            "panels": [
+                {
+                    "serial": p.inverter_serial,
+                    "ac_kw": p.ac_kw,
+                    "temp_c": p.temp_c,
+                    "lifetime_kwh": p.lifetime_kwh,
+                    "status": getattr(p, "status", None),
+                    "combined_score": getattr(p, "combined_score", None)
+                }
+                for p in panels
+            ],
+            "status": {
+                "backend": get_backend_health(),
+                "collector": get_collector_health(),
+                "panel_count": len(panels)
+            }
+        }
+
+        return snapshot
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to build system snapshot: {e}")
+
 @app.get("/mode")
 def get_mode():
     try:
