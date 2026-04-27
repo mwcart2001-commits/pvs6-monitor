@@ -180,8 +180,6 @@ def get_hourly_history(date_str: str):
         "net_kwh": [round(v, 3) for v in hourly_net]
     }
 
-from .models import PanelSnapshot
-
 def get_merged_system_snapshot():
     """
     Returns a combined structure containing:
