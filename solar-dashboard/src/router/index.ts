@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 import CurrentSystemPage from '../pages/CurrentSystemPage.vue'
 
-const routes: Array<RouteRecordRaw> = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/current-system',
     name: 'CurrentSystem',
@@ -15,4 +16,3 @@ const router = createRouter({
 })
 
 export default router
-
