@@ -21,46 +21,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- ⭐ Mode Badge -->
-  <div class="mode-badge" :class="mode">
-    {{ mode.toUpperCase() }} MODE
-  </div>
-
-  <div class="p-6 space-y-6">
-
-    <!-- Toggle Buttons -->
-    <div class="flex gap-3 mb-4">
-      <button
-        @click="view = 'power'"
-        :class="[
-          'px-4 py-2 rounded font-medium',
-          view === 'power'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700'
-        ]"
-      >
-        Dynamic Power (kW)
-      </button>
-
-      <button
-        @click="view = 'hourly'"
-        :class="[
-          'px-4 py-2 rounded font-medium',
-          view === 'hourly'
-            ? 'bg-blue-600 text-white'
-            : 'bg-gray-200 text-gray-700'
-        ]"
-      >
-        Hourly Energy (kWh)
-      </button>
-    </div>
-
-    <!-- Chart Display -->
-    <div>
-      <DailyChart v-if="view === 'power'" />
-      <DailyHourlyChart v-if="view === 'hourly'" />
-    </div>
-  </div>
+  <router-view />
 </template>
 
 <style>
