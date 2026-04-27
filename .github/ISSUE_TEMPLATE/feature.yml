@@ -1,0 +1,53 @@
+name: "Feature"
+description: "Create a new feature-level issue"
+title: "Feature: <short description>"
+labels: ["feature"]
+projects: ["<your-org>/<your-project>"]
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "What is the purpose of this feature?"
+      placeholder: "High-level description"
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: "Goals"
+      description: "What should this feature accomplish?"
+      placeholder: "- Goal 1\n- Goal 2"
+    validations:
+      required: true
+
+  - type: textarea
+    id: requirements
+    attributes:
+      label: "Requirements"
+      description: "Functional and non-functional requirements"
+      placeholder: "- Requirement 1\n- Requirement 2"
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: "Acceptance Criteria"
+      description: "Conditions that must be met for this feature to be complete"
+      placeholder: "- AC 1\n- AC 2"
+
+  - type: input
+    id: epic
+    attributes:
+      label: "Epic"
+      description: "Which epic does this feature belong to?"
+      placeholder: "Systemd Services, Dashboard, Collector, etc."
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "Priority"
+      options:
+        - High
+        - Medium
+        - Low
