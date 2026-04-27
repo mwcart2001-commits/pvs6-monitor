@@ -20,6 +20,8 @@ onMounted(async () => {
 });
 </script>
 
+// Commenting out this entire older section for now
+<!--
 <template>
   <!-- ⭐ Mode Badge -->
   <div class="mode-badge" :class="mode">
@@ -61,6 +63,11 @@ onMounted(async () => {
       <DailyHourlyChart v-if="view === 'hourly'" />
     </div>
   </div>
+</template>
+-->
+
+<template>
+  <router-view />
 </template>
 
 <style>
