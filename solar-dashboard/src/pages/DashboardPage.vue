@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import DailyChart from "./components/DailyChart.vue";
-import DailyHourlyChart from "./components/DailyHourlyChart.vue";
+import DailyChart from "../components/DailyChart.vue";
+import DailyHourlyChart from "../components/DailyHourlyChart.vue";
 
 const view = ref("power");
 
@@ -20,17 +20,15 @@ onMounted(async () => {
 });
 </script>
 
-
 <template>
-// Commenting out this entire older section for now
-  <!--
+  <!-- ⭐ Mode Badge -->
   <div class="mode-badge" :class="mode">
     {{ mode.toUpperCase() }} MODE
   </div>
 
   <div class="p-6 space-y-6">
 
-    // Toggle Buttons 
+    <!-- Toggle Buttons -->
     <div class="flex gap-3 mb-4">
       <button
         @click="view = 'power'"
@@ -57,15 +55,12 @@ onMounted(async () => {
       </button>
     </div>
 
-    // Chart Display
+    <!-- Chart Display -->
     <div>
       <DailyChart v-if="view === 'power'" />
       <DailyHourlyChart v-if="view === 'hourly'" />
     </div>
   </div>
-  -->
-  
-    <router-view />
 </template>
 
 <style>
@@ -95,4 +90,3 @@ onMounted(async () => {
   background: #999;
 }
 </style>
-
