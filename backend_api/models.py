@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from typing import List
-from pydantic import BaseModel
 
 class SystemSnapshot(BaseModel):
     timestamp: str
@@ -12,24 +11,22 @@ class SystemSnapshot(BaseModel):
     lifetime_export_kwh: float
     panel_count: int
 
-class DayHistory(BaseModel):
-    date: str
-    system: List[SystemSnapshot]
-    panels: List[List[PanelSnapshot]]
 
+# MUST come before DayHistory
 class PanelSnapshot(BaseModel):
     physical_label: str
     inverter_serial: str
     install_group: str
 
     # electrical metrics
-    ac_power_kw: float | None
-    dc_power_kw: float | None
-    voltage_v: float | None
-    temperature_c: float | None
-    lifetime_ac_kwh: float | None
+    ac_kw: float | None = None
+    dc_kw: float | None = None
+    vdc: float | None = None
+    idc: float | None = None
+    temp_c: float | None = None
+    lifetime_kwh: float | None = None
 
-    # health scoring (optional)
+    # scoring fields
     health_score: float | None = None
     normalized_output: float | None = None
     combined_score: float | None = None
@@ -37,3 +34,9 @@ class PanelSnapshot(BaseModel):
 
     # timestamp
     timestamp: int
+
+
+class DayHistory(BaseModel):
+    date: str
+    system: List[SystemSnapshot]
+    panels: List[List[PanelSnapshot]]
