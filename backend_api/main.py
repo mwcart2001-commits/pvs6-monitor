@@ -105,3 +105,35 @@ def get_mode():
     except (FileNotFoundError, OSError):
         return {"mode": "unknown"}
 
+@app.get("/api/system/current")
+def api_system_current():
+    import sqlite3
+    from .queries import DB_PATH  # adjust if DB_PATH is defined elsewhere
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT timestamp, production_kw, consumption_kw, grid_kw
+        FROM readings
+        ORDER BY timestamp DESC
+        LIMIT 1
+    """)
+
+    row = cur.fetchone()
+    conn.close()
+
+    if not row:
+        return {"error": "no data"}
+
+    ts, solar, load, grid = row
+
+    return {
+        "timestamp": ts,
+        "solar_kw": solar,
+        "load_kw": load,
+        "net_kw": solar - load,
+        "grid_kw": grid
+    }
+
+
