@@ -66,26 +66,24 @@ def get_latest_panels():
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    rows = cur.execute("""
-        SELECT 
-            pr.inverter_serial,
-            pi.physical_label,
-            pi.install_group,
-            pr.ac_power_kw AS ac_kw,
-            pr.dc_power_kw AS dc_kw,
-            pr.dc_voltage_v AS vdc,
-            pr.dc_current_a AS idc,
-            pr.heatsink_temp_c AS temp_c,
-            pr.lifetime_ac_kwh AS lifetime_kwh
-        FROM panel_readings pr
-        LEFT JOIN panel_identity pi
-            ON pr.inverter_serial = pi.inverter_id
-        WHERE pr.timestamp = (
-            SELECT MAX(timestamp) FROM panel_readings
-        )
-        ORDER BY pi.physical_label;
-    """).fetchall()
+    cur.execute("""
+        SELECT
+            physical_label,
+            inverter_serial,
+            install_group,
+            ac_kw,
+            dc_kw,
+            vdc,
+            idc,
+            temp_c,
+            lifetime_kwh,
+            timestamp
+        FROM panel_readings
+        WHERE timestamp = (SELECT MAX(timestamp) FROM panel_readings)
+        ORDER BY physical_label
+    """)
 
+    rows = cur.fetchall()
     conn.close()
     return rows
 
