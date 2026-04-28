@@ -1,44 +1,64 @@
 <template>
-  <div class="p-6 space-y-8">
+  <div class="p-6 space-y-10">
 
-    <h1 class="text-2xl font-bold">Current System Status</h1>
+    <!-- Page Title -->
+    <h1 class="text-3xl font-semibold tracking-tight">Current System Status</h1>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="text-gray-500">
-      Loading system data…
-    </div>
+    <!-- System Overview Section -->
+    <section class="bg-white rounded-xl shadow p-6 space-y-6">
+      <h2 class="text-xl font-medium text-gray-700">System Overview</h2>
 
-    <!-- Error State -->
-    <div v-else-if="error" class="text-red-600">
-      {{ error }}
-    </div>
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <SystemSummaryCard
+          label="Solar Generation"
+          :value="solar.toFixed(2)"
+          unit="kW"
+        />
+        <SystemSummaryCard
+          label="Home Load"
+          :value="load.toFixed(2)"
+          unit="kW"
+        />
+        <SystemSummaryCard
+          label="Net Power"
+          :value="net.toFixed(2)"
+          unit="kW"
+        />
+        <SystemSummaryCard
+          label="Grid Import/Export"
+          :value="grid.toFixed(2)"
+          unit="kW"
+        />
+      </div>
+    </section>
 
-    <!-- System Summary Cards -->
-    <div v-else class="flex gap-4 flex-wrap">
-      <SystemSummaryCard
-        label="Solar Generation"
-        :value="solar.toFixed(2)"
-        unit="kW"
-      />
-      <SystemSummaryCard
-        label="Home Load"
-        :value="load.toFixed(2)"
-        unit="kW"
-      />
-      <SystemSummaryCard
-        label="Net Power"
-        :value="net.toFixed(2)"
-        unit="kW"
-      />
-      <SystemSummaryCard
-        label="Grid Import/Export"
-        :value="grid.toFixed(2)"
-        unit="kW"
-      />
-    </div>
+    <!-- Panel Metric Selector -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-medium text-gray-700">Panel Metrics</h2>
 
-    <!-- Panel Grid -->
-    <PanelGrid />
+      <div class="flex flex-wrap gap-3">
+        <button
+          v-for="metric in metrics"
+          :key="metric.key"
+          @click="selectedMetric = metric.key"
+          :class="[
+            'px-4 py-2 rounded-lg transition',
+            selectedMetric === metric.key
+              ? 'bg-blue-600 text-white shadow'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+          ]"
+        >
+          {{ metric.label }}
+        </button>
+      </div>
+    </section>
+
+    <!-- Panel Layout -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-medium text-gray-700">Panel Layout</h2>
+      <PanelGrid :metric="selectedMetric" />
+    </section>
 
   </div>
 </template>
@@ -48,6 +68,9 @@ import { ref, onMounted } from 'vue'
 import SystemSummaryCard from '../components/SystemSummaryCard.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 
+/* -----------------------------
+   System Snapshot State
+------------------------------ */
 const loading = ref(true)
 const error = ref(null)
 
@@ -56,6 +79,22 @@ const load = ref(0)
 const net = ref(0)
 const grid = ref(0)
 
+/* -----------------------------
+   Panel Metric Selector
+------------------------------ */
+const selectedMetric = ref('ac_power')
+
+const metrics = [
+  { key: 'ac_power', label: 'AC Power' },
+  { key: 'dc_power', label: 'DC Power' },
+  { key: 'voltage', label: 'Voltage' },
+  { key: 'temperature', label: 'Temperature' },
+  { key: 'health', label: 'Health Score' }
+]
+
+/* -----------------------------
+   Fetch System Snapshot
+------------------------------ */
 onMounted(async () => {
   try {
     const res = await fetch('/api/system/current')
@@ -74,4 +113,3 @@ onMounted(async () => {
   }
 })
 </script>
-
