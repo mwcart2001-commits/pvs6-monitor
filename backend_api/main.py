@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .models import SystemSnapshot, PanelSnapshot
-from db import get_latest_panels
 
 from .queries import (
     get_latest_system,
