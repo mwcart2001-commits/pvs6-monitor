@@ -1,22 +1,57 @@
 <template>
   <div class="space-y-4">
 
-    <!-- Row 1: 8 panels -->
+    <!-- Row 1 -->
     <div class="flex gap-2">
-      <PanelTile v-for="p in row1" :key="p" :label="p" />
+      <PanelTile
+        v-for="panel in row1Panels"
+        :key="panel.physical_label"
+        :label="panel.physical_label"
+        :value="panel[metric]"
+      />
     </div>
 
-    <!-- Row 2: 7 panels -->
+    <!-- Row 2 -->
     <div class="flex gap-2">
-      <PanelTile v-for="p in row2" :key="p" :label="p" />
+      <PanelTile
+        v-for="panel in row2Panels"
+        :key="panel.physical_label"
+        :label="panel.physical_label"
+        :value="panel[metric]"
+      />
     </div>
 
   </div>
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import PanelTile from './PanelTile.vue'
 
-const row1 = ['R1C1','R1C2','R1C3','R1C4','R1C5','R1C6','R1C7','R1C8']
-const row2 = ['R2C1','R2C2','R2C3','R2C4','R2C5','R2C6','R2C7']
+/* Props */
+const props = defineProps({
+  metric: {
+    type: String,
+    required: true
+  }
+})
+
+/* Example panel data structure:
+   You will replace this with real API data soon.
+*/
+const panels = [
+  { physical_label: 'R1C1', ac_power: 120, dc_power: 130, voltage: 38, temperature: 45, health: 98 },
+  { physical_label: 'R1C2', ac_power: 118, dc_power: 129, voltage: 37, temperature: 44, health: 97 },
+  // ...
+  // All 15 panels
+]
+
+/* Split into rows based on physical label */
+const row1Panels = computed(() =>
+  panels.filter(p => p.physical_label.startsWith('R1'))
+)
+
+const row2Panels = computed(() =>
+  panels.filter(p => p.physical_label.startsWith('R2'))
+)
 </script>
