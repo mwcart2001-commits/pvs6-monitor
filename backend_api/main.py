@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from models import PanelSnapshot
+from db import get_latest_panels
 
 from .queries import (
     get_latest_system,
@@ -79,16 +81,6 @@ app.add_middleware(
 def api_current():
     return get_latest_system()
 
-@app.get("/api/panels", response_model=list[PanelSnapshot])
-def api_panels():
-    rows = get_latest_panels()
-    panels = [PanelSnapshot(**dict(row)) for row in rows]
-
-    # Add scoring
-    panels = compute_panel_scores(panels)
-
-    return panels
-
 @app.get("/api/history/day")
 def api_history_day(date: str):
     return get_day_history(date)
@@ -135,5 +127,13 @@ def api_system_current():
         "net_kw": solar - load,
         "grid_kw": grid
     }
+    
+@app.get("/api/panels", response_model=list[PanelSnapshot])
+def api_panels():
+    rows = get_latest_panels()
+    panels = [PanelSnapshot(**dict(row)) for row in rows]
 
+    # Add scoring
+    panels = compute_panel_scores(panels)
 
+    return panels
