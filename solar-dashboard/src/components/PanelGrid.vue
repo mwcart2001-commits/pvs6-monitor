@@ -27,6 +27,7 @@
 <script setup>
 import { computed } from 'vue'
 import PanelTile from './PanelTile.vue'
+import { usePanels } from '../composables/usePanels'
 
 /* Props */
 const props = defineProps({
@@ -36,22 +37,15 @@ const props = defineProps({
   }
 })
 
-/* Example panel data structure:
-   You will replace this with real API data soon.
-*/
-const panels = [
-  { physical_label: 'R1C1', ac_power: 120, dc_power: 130, voltage: 38, temperature: 45, health: 98 },
-  { physical_label: 'R1C2', ac_power: 118, dc_power: 129, voltage: 37, temperature: 44, health: 97 },
-  // ...
-  // All 15 panels
-]
+/* Load real panel data */
+const { panels } = usePanels()
 
 /* Split into rows based on physical label */
 const row1Panels = computed(() =>
-  panels.filter(p => p.physical_label.startsWith('R1'))
+  panels.value.filter(p => p.physical_label.startsWith('R1'))
 )
 
 const row2Panels = computed(() =>
-  panels.filter(p => p.physical_label.startsWith('R2'))
+  panels.value.filter(p => p.physical_label.startsWith('R2'))
 )
 </script>
