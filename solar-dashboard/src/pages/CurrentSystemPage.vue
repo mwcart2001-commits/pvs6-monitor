@@ -85,11 +85,11 @@ const grid = ref(0)
 const selectedMetric = ref('ac_power')
 
 const metrics = [
-  { key: 'ac_power', label: 'AC Power' },
-  { key: 'dc_power', label: 'DC Power' },
-  { key: 'voltage', label: 'Voltage' },
-  { key: 'temperature', label: 'Temperature' },
-  { key: 'health', label: 'Health Score' }
+  { key: 'ac_kw', label: 'AC Power' },
+  { key: 'dc_kw', label: 'DC Power' },
+  { key: 'vdc', label: 'Voltage' },
+  { key: 'temp_c', label: 'Temperature' },
+  { key: 'health_score', label: 'Health Score' }
 ]
 
 /* -----------------------------
