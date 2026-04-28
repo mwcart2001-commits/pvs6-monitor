@@ -1,3 +1,48 @@
+<template>
+  <div class="p-6 space-y-8">
+
+    <h1 class="text-2xl font-bold">Current System Status</h1>
+
+    <!-- Loading State -->
+    <div v-if="loading" class="text-gray-500">
+      Loading system data…
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="text-red-600">
+      {{ error }}
+    </div>
+
+    <!-- System Summary Cards -->
+    <div v-else class="flex gap-4 flex-wrap">
+      <SystemSummaryCard
+        label="Solar Generation"
+        :value="solar.toFixed(2)"
+        unit="kW"
+      />
+      <SystemSummaryCard
+        label="Home Load"
+        :value="load.toFixed(2)"
+        unit="kW"
+      />
+      <SystemSummaryCard
+        label="Net Power"
+        :value="net.toFixed(2)"
+        unit="kW"
+      />
+      <SystemSummaryCard
+        label="Grid Import/Export"
+        :value="grid.toFixed(2)"
+        unit="kW"
+      />
+    </div>
+
+    <!-- Panel Grid -->
+    <PanelGrid />
+
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue'
 import SystemSummaryCard from '../components/SystemSummaryCard.vue'
@@ -29,3 +74,4 @@ onMounted(async () => {
   }
 })
 </script>
+
