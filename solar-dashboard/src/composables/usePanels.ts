@@ -15,12 +15,12 @@ export function usePanels() {
 
       const data = await res.json()
 
-      // Sort by physical label (R1C1 → R2C7)
+      // Sort by physical layout (R1C1 → R2C7)
       data.sort((a, b) => a.physical_label.localeCompare(b.physical_label))
 
       panels.value = data
     } catch (err) {
-      error.value = err
+      error.value = err instanceof Error ? err.message : String(err)
     } finally {
       loading.value = false
     }
