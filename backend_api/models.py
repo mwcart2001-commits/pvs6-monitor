@@ -14,27 +14,30 @@ class SystemSnapshot(BaseModel):
 
 # MUST come before DayHistory
 class PanelSnapshot(BaseModel):
-    physical_label: str
     inverter_serial: str
-    install_group: str
+    module_serial: str | None = None
+    model: str | None = None
+    state: str | None = None
+    state_descr: str | None = None
 
-    # electrical metrics
-    ac_kw: float | None = None
-    dc_kw: float | None = None
-    vdc: float | None = None
-    idc: float | None = None
-    temp_c: float | None = None
-    lifetime_kwh: float | None = None
+    ac_power_kw: float | None = None
+    dc_power_kw: float | None = None
+    lifetime_ac_kwh: float | None = None
+
+    ac_voltage_v: float | None = None
+    ac_current_a: float | None = None
+    dc_voltage_v: float | None = None
+    dc_current_a: float | None = None
+
+    heatsink_temp_c: float | None = None
+
+    timestamp: int
 
     # scoring fields
     health_score: float | None = None
     normalized_output: float | None = None
     combined_score: float | None = None
     status: str | None = None
-
-    # timestamp
-    timestamp: int
-
 
 class DayHistory(BaseModel):
     date: str
