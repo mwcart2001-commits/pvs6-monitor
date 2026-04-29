@@ -1,8 +1,9 @@
 from pydantic import BaseModel
-from typing import List
+from typing import Optional
+
 
 class SystemSnapshot(BaseModel):
-    timestamp: str
+    timestamp: int
     production_kw: float
     consumption_kw: float
     grid_kw: float
@@ -12,32 +13,32 @@ class SystemSnapshot(BaseModel):
     panel_count: int
 
 
-# MUST come before DayHistory
 class PanelSnapshot(BaseModel):
     inverter_serial: str
-    module_serial: str | None = None
-    model: str | None = None
-    state: str | None = None
-    state_descr: str | None = None
+    module_serial: Optional[str] = None
+    model: Optional[str] = None
+    state: Optional[str] = None
+    state_descr: Optional[str] = None
 
-    ac_power_kw: float | None = None
-    dc_power_kw: float | None = None
-    lifetime_ac_kwh: float | None = None
+    ac_power_kw: Optional[float] = None
+    dc_power_kw: Optional[float] = None
+    lifetime_ac_kwh: Optional[float] = None
 
-    ac_voltage_v: float | None = None
-    ac_current_a: float | None = None
-    dc_voltage_v: float | None = None
-    dc_current_a: float | None = None
+    ac_voltage_v: Optional[float] = None
+    ac_current_a: Optional[float] = None
+    dc_voltage_v: Optional[float] = None
+    dc_current_a: Optional[float] = None
 
-    heatsink_temp_c: float | None = None
+    heatsink_temp_c: Optional[float] = None
 
     timestamp: int
 
-    # scoring fields
-    health_score: float | None = None
-    normalized_output: float | None = None
-    combined_score: float | None = None
-    status: str | None = None
+    # Added fields
+    physical_label: Optional[str] = None
+    health_score: Optional[float] = None
+    normalized_output: Optional[float] = None
+    combined_score: Optional[float] = None
+    status: Optional[str] = None
 
 class DayHistory(BaseModel):
     date: str
