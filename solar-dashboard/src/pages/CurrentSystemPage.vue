@@ -85,10 +85,10 @@ const grid = ref(0)
 const selectedMetric = ref('ac_power')
 
 const metrics = [
-  { key: 'ac_kw', label: 'AC Power' },
-  { key: 'dc_kw', label: 'DC Power' },
-  { key: 'vdc', label: 'Voltage' },
-  { key: 'temp_c', label: 'Temperature' },
+  { key: 'ac_power_kw', label: 'AC Power' },
+  { key: 'dc_power_kw', label: 'DC Power' },
+  { key: 'ac_voltage_v', label: 'Voltage' },
+  { key: 'heatsink_temp_c', label: 'Temperature' },
   { key: 'health_score', label: 'Health Score' }
 ]
 
