@@ -2,7 +2,6 @@ import sqlite3
 from .models import SystemSnapshot
 from datetime import datetime, timedelta
 
-
 DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
 
 def get_latest_system():
@@ -60,6 +59,11 @@ def _get_latest_panel_count():
 
     conn.close()
     return row[0] if row and row[0] is not None else 0
+
+import sqlite3
+
+DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
+
 
 def get_latest_panels():
     conn = sqlite3.connect(DB_PATH)
