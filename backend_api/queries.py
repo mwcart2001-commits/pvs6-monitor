@@ -68,24 +68,29 @@ def get_latest_panels():
 
     cur.execute("""
         SELECT
-            physical_label,
             inverter_serial,
-            install_group,
-            ac_kw,
-            dc_kw,
-            vdc,
-            idc,
-            temp_c,
-            lifetime_kwh,
+            module_serial,
+            model,
+            state,
+            state_descr,
+            ac_power_kw,
+            dc_power_kw,
+            lifetime_ac_kwh,
+            ac_voltage_v,
+            ac_current_a,
+            dc_voltage_v,
+            dc_current_a,
+            heatsink_temp_c,
             timestamp
         FROM panel_readings
         WHERE timestamp = (SELECT MAX(timestamp) FROM panel_readings)
-        ORDER BY physical_label
+        ORDER BY inverter_serial
     """)
 
     rows = cur.fetchall()
     conn.close()
     return rows
+
 
 def get_day_history(date_str: str):
     day_start = datetime.fromisoformat(date_str)
