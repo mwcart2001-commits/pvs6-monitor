@@ -3,7 +3,8 @@ import { ref, onMounted } from "vue";
 import DailyChart from "../components/DailyChart.vue";
 import DailyHourlyChart from "../components/DailyHourlyChart.vue";
 
-const view = ref("power");
+const view = ref("hourly");
+//const view = ref("power");
 
 // ⭐ Mode indicator state
 const mode = ref("unknown");
@@ -57,8 +58,8 @@ onMounted(async () => {
 
     <!-- Chart Display -->
     <div>
-      <DailyChart v-if="view === 'power'" />
       <DailyHourlyChart v-if="view === 'hourly'" />
+      <DailyChart v-if="view === 'power'" />
     </div>
   </div>
 </template>

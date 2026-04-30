@@ -2,8 +2,6 @@ import sqlite3
 from .models import SystemSnapshot
 from datetime import datetime, timedelta
 
-from .models import PanelSnapshot
-
 DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
 
 def get_latest_system():
@@ -62,33 +60,39 @@ def _get_latest_panel_count():
     conn.close()
     return row[0] if row and row[0] is not None else 0
 
+DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
+
+
 def get_latest_panels():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     cur = conn.cursor()
 
-    rows = cur.execute("""
-        SELECT 
-            pr.inverter_serial,
-            pi.physical_label,
-            pi.install_group,
-            pr.ac_power_kw AS ac_kw,
-            pr.dc_power_kw AS dc_kw,
-            pr.dc_voltage_v AS vdc,
-            pr.dc_current_a AS idc,
-            pr.heatsink_temp_c AS temp_c,
-            pr.lifetime_ac_kwh AS lifetime_kwh
-        FROM panel_readings pr
-        LEFT JOIN panel_identity pi
-            ON pr.inverter_serial = pi.inverter_id
-        WHERE pr.timestamp = (
-            SELECT MAX(timestamp) FROM panel_readings
-        )
-        ORDER BY pi.physical_label;
-    """).fetchall()
+    cur.execute("""
+        SELECT
+            inverter_serial,
+            module_serial,
+            model,
+            state,
+            state_descr,
+            ac_power_kw,
+            dc_power_kw,
+            lifetime_ac_kwh,
+            ac_voltage_v,
+            ac_current_a,
+            dc_voltage_v,
+            dc_current_a,
+            heatsink_temp_c,
+            timestamp
+        FROM panel_readings
+        WHERE timestamp = (SELECT MAX(timestamp) FROM panel_readings)
+        ORDER BY inverter_serial
+    """)
 
+    rows = cur.fetchall()
     conn.close()
     return rows
+
 
 def get_day_history(date_str: str):
     day_start = datetime.fromisoformat(date_str)
@@ -179,25 +183,3 @@ def get_hourly_history(date_str: str):
         "consumption_kwh": [round(v, 3) for v in hourly_cons],
         "net_kwh": [round(v, 3) for v in hourly_net]
     }
-
-def get_merged_system_snapshot():
-    """
-    Returns a combined structure containing:
-    - latest system metrics (SystemSnapshot)
-    - latest panel metrics (list[PanelSnapshot])
-    """
-
-    system = get_latest_system()
-    panels_raw = get_latest_panels()
-
-    if system is None:
-        return None
-
-    # Convert DB rows → PanelSnapshot objects
-    panels = [PanelSnapshot(**dict(row)) for row in panels_raw]
-
-    return {
-        "system": system,
-        "panels": panels
-    }
-
