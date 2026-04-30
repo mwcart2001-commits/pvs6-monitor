@@ -3,17 +3,22 @@ import { ref, onMounted } from 'vue'
 export function useSystemSnapshot() {
   const system = ref(null)
   const loading = ref(true)
-  const error = ref(null)
+  const error = ref<string | null>(null)
 
   async function loadSystem() {
     loading.value = true
     error.value = null
+
     try {
       const res = await fetch('/api/system/current')
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       system.value = await res.json()
     } catch (err) {
-      error.value = err.message
+      if (err instanceof Error) {
+        error.value = err.message
+      } else {
+        error.value = String(err)
+      }
     } finally {
       loading.value = false
     }
