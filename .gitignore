@@ -16,6 +16,8 @@ node_modules/
 dist/
 *.local
 
+.vscode/
+
 # Systemd / runtime
 *.pid
 *.sock
