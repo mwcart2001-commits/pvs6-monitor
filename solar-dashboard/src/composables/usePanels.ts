@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 export function usePanels() {
   const panels = ref([])
   const loading = ref(true)
-  const error = ref(null)
+  const error = ref<string | null>(null)
 
   async function loadPanels() {
     loading.value = true
@@ -16,7 +16,9 @@ export function usePanels() {
       const data = await res.json()
 
       // Sort by physical layout (R1C1 → R2C7)
-      data.sort((a, b) => a.physical_label.localeCompare(b.physical_label))
+      data.sort((a: any, b: any) =>
+        a.physical_label.localeCompare(b.physical_label)
+      )
 
       panels.value = data
     } catch (err) {
