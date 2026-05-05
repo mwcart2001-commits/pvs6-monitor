@@ -64,15 +64,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import SystemSummaryCard from '../components/SystemSummaryCard.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 import { useSystemSnapshot } from '../composables/useSystemSnapshot'
 
 /* -----------------------------
-   Load System Snapshot
+   Load System Snapshot (FIXED)
 ------------------------------ */
-const { system } = useSystemSnapshot()
+const { system, loading, error, loadSystem } = useSystemSnapshot()
+
+onMounted(() => {
+  loadSystem()
+})
 
 /* -----------------------------
    Panel Metric Selector
@@ -87,4 +91,3 @@ const metrics = [
   { key: 'health_score', label: 'Health Score' }
 ]
 </script>
-
