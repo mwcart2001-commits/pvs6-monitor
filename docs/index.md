@@ -1,23 +1,130 @@
-# PVS6 Monitoring System — Overview
+# ☀️ PVS6 Monitoring System
 
-The PVS6 Monitoring System is a full-stack platform designed to collect, process, and visualize real-time solar production data from a PVS6 inverter. It combines embedded data collection, a Python backend API, a modern web dashboard, and a hardened backup system to deliver a reliable, self-maintaining monitoring solution.
+A local‑first, full‑stack solar monitoring platform built for reliability, clarity, and long‑term maintainability.
+
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+![Version](https://img.shields.io/badge/version-v0.4.0-blue)
+![Docs](https://img.shields.io/badge/docs-live-success)
+
+---
+## 📝 About This Project
+
+The PVS6 Monitoring System is a modular, full‑stack solar monitoring platform built to run locally without cloud dependencies. It demonstrates engineering depth across:
+
+- Embedded data collection  
+- Backend API design  
+- Frontend visualization  
+- Systemd service orchestration  
+- Backup and reliability engineering  
+
+This documentation site serves as both a technical reference and a portfolio artifact.
+
+---
+## 🧭 Start Here
+
+If you're new to the project, begin with these three pages:
+
+1. **[System Overview](index.md)**  
+   What the system does and why it exists.
+
+2. **[Architecture Overview](architecture/overview.md)**  
+   How the subsystems fit together.
+
+3. **[UI Walkthrough](ui-walkthrough.md)**  
+   What the Dashboard and Status pages look like.
+
+Then explore:
+- **[Roadmap](roadmap.md)** to see where the project is going  
+- **[Deployment Guide](deployment.md)** if you want to run it locally  
 
 ---
 
-## What the System Does
-- Collects live solar production and system status data from a PVS6 inverter
-- Stores and serves data through a lightweight FastAPI backend
-- Provides a responsive dashboard for real-time and historical insights
-- Automates nightly backups with retention, compression, and integrity checks
-- Runs as a set of systemd-managed services for reliability and recoverability
+## 🗂️ Visual Index
+
+### 🚀 Getting Started
+- 📘 **[System Overview](index.md)**  
+  High‑level description of the system.
+
+- 🗺️ **[Roadmap](roadmap.md)**  
+  Planned releases and future direction.
+
+- 🖥️ **[UI Walkthrough](ui-walkthrough.md)**  
+  Screenshots and explanation of the Dashboard + Status pages.
 
 ---
 
-## High-Level Architecture
+### 🏗️ Architecture
+- 🧱 **[Architecture Overview](architecture/overview.md)**  
+  High‑level system design.
 
-flowchart TD
-    A[PVS6 Inverter] --> B[Collector Service]
-    B --> C[SQLite Database]
-    C --> D[Backend API - FastAPI]
-    D --> E[Dashboard - Vue/Vite]
-    C --> F[Nightly Backup Pipeline]
+- 🔌 **[Collector](architecture/collector.md)**  
+  How data is gathered from the inverter.
+
+- 🧮 **[Backend API](architecture/backend.md)**  
+  Endpoints, schemas, and data flow.
+
+- 📊 **[Dashboard](architecture/dashboard.md)**  
+  UI components and rendering logic.
+
+- ⚙️ **[Systemd Services](architecture/systemd.md)**  
+  Reliability and service orchestration.
+
+- 🗄️ **[Database Schema](architecture/database.md)**  
+  Tables, fields, and data model.
+
+---
+
+### 🛠️ Operations
+- 📦 **[Deployment Guide](deployment.md)**  
+  How to install and run the system.
+
+- 🔐 **[Backup Reliability Release](releases/v0.4.0.md)**  
+  Details of the v0.4.0 backup system.
+
+---
+
+## 📚 Documentation Index
+
+### **Core Pages**
+- [System Overview](index.md)
+- [Roadmap](roadmap.md)
+- [Deployment Guide](deployment.md)
+- [UI Walkthrough](ui-walkthrough.md)
+
+### **Architecture**
+- [Architecture Overview](architecture/overview.md)
+- [Collector Subsystem](architecture/collector.md)
+- [Backend API](architecture/backend.md)
+- [Dashboard](architecture/dashboard.md)
+- [Systemd Services](architecture/systemd.md)
+- [Database Schema](architecture/database.md)
+
+### **Releases**
+- [v0.4.0 — Backup Reliability Release](releases/v0.4.0.md)
+
+---
+
+## 🧭 Quick Navigation (Sidebar Style)
+
+- **Overview**
+  - [System Overview](index.md)
+  - [Roadmap](roadmap.md)
+  - [UI Walkthrough](ui-walkthrough.md)
+
+- **Architecture**
+  - [Architecture Overview](architecture/overview.md)
+  - [Collector](architecture/collector.md)
+  - [Backend API](architecture/backend.md)
+  - [Dashboard](architecture/dashboard.md)
+  - [Systemd Services](architecture/systemd.md)
+  - [Database Schema](architecture/database.md)
+
+- **Operations**
+  - [Deployment Guide](deployment.md)
+  - [Backup Reliability Release](releases/v0.4.0.md)
+
+---
+
+
+
+
