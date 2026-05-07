@@ -19,3 +19,13 @@ The Backend API exposes system status, panel data, and historical metrics to the
 flowchart TD
     A[SQLite Database] --> B[FastAPI Backend]
     B --> C[Dashboard]
+```
+
+## Endpoints
+/system/status
+
+/panels
+
+/history/daily
+
+/history/hourly
