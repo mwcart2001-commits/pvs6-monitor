@@ -1,45 +1,23 @@
-# 🌞 Solar Monitoring Platform  
-A modular, reliable, and analytics‑driven solar monitoring system for Raspberry Pi or small‑scale servers. This platform collects panel‑level data, stores it efficiently, exposes a FastAPI backend, and presents a clean dashboard UI with long‑term insights, alerts, and automated backups.
+# PVS6 Monitoring System — Overview
+
+The PVS6 Monitoring System is a full-stack platform designed to collect, process, and visualize real-time solar production data from a PVS6 inverter. It combines embedded data collection, a Python backend API, a modern web dashboard, and a hardened backup system to deliver a reliable, self-maintaining monitoring solution.
 
 ---
 
-## 📘 Documentation  
-Use the links below to explore the system:
-
-- [Setup Guide](setup.md)
-- [Architecture Overview](architecture.md)
-- [API Reference](api.md)
-- [Analytics Engine](analytics.md)
-- [Dashboard UI](dashboard.md)
-- [Configuration System](configuration.md)
-- [Troubleshooting](troubleshooting.md)
+## What the System Does
+- Collects live solar production and system status data from a PVS6 inverter
+- Stores and serves data through a lightweight FastAPI backend
+- Provides a responsive dashboard for real-time and historical insights
+- Automates nightly backups with retention, compression, and integrity checks
+- Runs as a set of systemd-managed services for reliability and recoverability
 
 ---
 
-## 🚀 Features  
-- Real‑time and historical solar metrics  
-- Panel‑level monitoring  
-- Daily summaries and long‑term trends  
-- Anomaly detection  
-- Automated backups and retention  
-- Systemd‑based reliability  
-- Clean dashboard UI  
-- FastAPI backend with structured endpoints  
+## High-Level Architecture
 
----
-
-## 🛠️ Tech Stack  
-- Python (FastAPI, SQLAlchemy)  
-- SQLite  
-- Node / Vue  
-- Systemd  
-- GitHub Actions  
-
----
-
-## 🗂️ Project Structure  
-
----
-
-## 📄 License  
-MIT License .
+flowchart TD
+    A[PVS6 Inverter] --> B[Collector Service]
+    B --> C[SQLite Database]
+    C --> D[Backend API - FastAPI]
+    D --> E[Dashboard - Vue/Vite]
+    C --> F[Nightly Backup Pipeline]
