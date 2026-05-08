@@ -1,13 +1,17 @@
 #!/bin/bash
-set -euo pipefail
 
-timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+set -e
+
+# Directories and paths
 BACKUP_DIR="/home/pi/pvs6-monitor/backups"
 WORK_DIR="/home/pi/pvs6-monitor/tmp_backup"
-DB_SOURCE="/home/pi/pvs6-monitor/pvs6_data.db"
+DB_SOURCE="/home/pi/pvs6-monitor/pvs6.sqlite"
 LOG_FILE="/home/pi/rclone-backup.log"
 
-mkdir -p "$BACKUP_DIR" "$WORK_DIR"
+timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
+
+mkdir -p "$WORK_DIR"
+mkdir -p "$BACKUP_DIR"
 
 echo "[$(date)] Starting backup" | tee -a "$LOG_FILE"
 
@@ -39,17 +43,17 @@ rm -f "$SQLITE_BACKUP"
 FINAL_LOCAL="$BACKUP_DIR/$(basename "$GZ_BACKUP")"
 mv "$GZ_BACKUP" "$FINAL_LOCAL"
 
-# 7) Upload to encrypted OneDrive remote
-rclone sync "$BACKUP_DIR" onedrive-crypt: \
+# 7) Retention: keep only last 14 days of compressed backups
+find "$BACKUP_DIR" -type f -mtime +14 -name "*.gz" -delete
+
+# 8) Upload to encrypted OneDrive remote (SAFE: does NOT delete old cloud files)
+rclone copy "$BACKUP_DIR" onedrive-crypt: \
   --onedrive-upload-cutoff 0 \
   --onedrive-chunk-size 10M \
   --transfers 1 \
   -vv \
   --log-file "$LOG_FILE"
 
-# 8) Log success
+# 9) Log success
 echo "[$(date)] Backup completed successfully: $(basename "$FINAL_LOCAL")" | tee -a "$LOG_FILE"
 logger "PVS6 backup completed successfully: $(basename "$FINAL_LOCAL")"
-
-# 9) Optional: healthcheck ping
-# curl -fsS https://hc-ping.com/YOUR-UUID-HERE >/dev/null 2>&1 || true
