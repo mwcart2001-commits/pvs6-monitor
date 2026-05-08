@@ -19,28 +19,6 @@ The PVS6 Monitoring System is a modular, full‑stack solar monitoring platform 
 
 This documentation site serves as both a technical reference and a portfolio artifact.
 
----
-## 🧭 Start Here
-
-If you're new to the project, begin with these three pages:
-
-1. **[System Overview](index.md)**  
-   What the system does and why it exists.
-
-2. **[Architecture Overview](architecture/overview.md)**  
-   How the subsystems fit together.
-
-3. **[UI Walkthrough](ui-walkthrough.md)**  
-   What the Dashboard and Status pages look like.
-
-Then explore:
-- **[Roadmap](roadmap.md)** to see where the project is going  
-- **[Deployment Guide](deployment.md)** if you want to run it locally  
-
----
-
-## 🗂️ Visual Index
-
 ### 🚀 Getting Started
 - 📘 **[System Overview](index.md)**  
   High‑level description of the system.
@@ -104,26 +82,6 @@ Then explore:
 
 ---
 
-## 🧭 Quick Navigation (Sidebar Style)
-
-- **Overview**
-  - [System Overview](index.md)
-  - [Roadmap](roadmap.md)
-  - [UI Walkthrough](ui-walkthrough.md)
-
-- **Architecture**
-  - [Architecture Overview](architecture/overview.md)
-  - [Collector](architecture/collector.md)
-  - [Backend API](architecture/backend.md)
-  - [Dashboard](architecture/dashboard.md)
-  - [Systemd Services](architecture/systemd.md)
-  - [Database Schema](architecture/database.md)
-
-- **Operations**
-  - [Deployment Guide](deployment.md)
-  - [Backup Reliability Release](releases/v0.4.0.md)
-
----
 
 
 
