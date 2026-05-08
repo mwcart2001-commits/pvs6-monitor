@@ -9,6 +9,8 @@ __pycache__/
 *.db
 
 # Backups
+*.sqlite
+*.sqlite.gz
 backups/
 
 # Node/Vite
