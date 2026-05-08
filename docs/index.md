@@ -20,7 +20,7 @@ The PVS6 Monitoring System is a modular, full‑stack solar monitoring platform 
 This documentation site serves as both a technical reference and a portfolio artifact.
 
 ### 🚀 Getting Started
-- 📘 **[System Overview](index.md)**  
+- 📘 **[System Overview](system-overview.md)**  
   High‑level description of the system.
 
 - 🗺️ **[Roadmap](roadmap.md)**  
