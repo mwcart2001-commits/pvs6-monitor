@@ -178,7 +178,24 @@ def api_panels():
     panels.sort(key=lambda p: p.physical_label)
 
     return panels
-    @app.get("/api/summary/daily")
+
+def compute_summary(first, last):
+    prod = last["production_lifetime_kwh"] - first["production_lifetime_kwh"]
+    imp  = last["grid_imported_lifetime_kwh"] - first["grid_imported_lifetime_kwh"]
+    exp  = last["grid_exported_lifetime_kwh"] - first["grid_exported_lifetime_kwh"]
+
+    cons = prod + imp - exp
+    net  = prod - cons
+
+    return {
+        "production_kwh": round(prod, 3),
+        "consumption_kwh": round(cons, 3),
+        "grid_import_kwh": round(imp, 3),
+        "grid_export_kwh": round(exp, 3),
+        "net_kwh": round(net, 3)
+    }
+
+@app.get("/api/summary/daily")
 def api_daily_summary(date: str):
     """
     Returns daily totals for production, consumption, import, export, and net.
@@ -238,3 +255,140 @@ def api_daily_summary(date: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/summary/weekly")
+def api_weekly_summary(date: str):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        end_dt = datetime.strptime(date, "%Y-%m-%d")
+        start_dt = end_dt - timedelta(days=6)
+
+        start_ts = int(start_dt.replace(hour=0, minute=0, second=0).timestamp())
+        end_ts = int(end_dt.replace(hour=23, minute=59, second=59).timestamp())
+
+        # First sample of the week
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp ASC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        first = cur.fetchone()
+
+        # Last sample of the week
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        last = cur.fetchone()
+
+        if not first or not last:
+            return {"error": "No data for this week"}
+
+        return compute_summary(first, last)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/summary/monthly")
+def api_monthly_summary(date: str):
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        dt = datetime.strptime(date, "%Y-%m-%d")
+
+        # First day of month
+        start_dt = dt.replace(day=1, hour=0, minute=0, second=0)
+
+        # Last day of month
+        if dt.month == 12:
+            next_month = dt.replace(year=dt.year + 1, month=1, day=1)
+        else:
+            next_month = dt.replace(month=dt.month + 1, day=1)
+
+        end_dt = next_month - timedelta(seconds=1)
+
+        start_ts = int(start_dt.timestamp())
+        end_ts = int(end_dt.timestamp())
+
+        # First sample of the month
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp ASC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        first = cur.fetchone()
+
+        # Last sample of the month
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        last = cur.fetchone()
+
+        if not first or not last:
+            return {"error": "No data for this month"}
+
+        return compute_summary(first, last)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/summary/yearly")
+def api_yearly_summary(date: str):
+    """
+    Example: /api/summary/yearly?date=2026
+    """
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        year = int(date)
+
+        # Start of year
+        start_dt = datetime(year, 1, 1, 0, 0, 0)
+
+        # End of year
+        end_dt = datetime(year, 12, 31, 23, 59, 59)
+
+        start_ts = int(start_dt.timestamp())
+        end_ts = int(end_dt.timestamp())
+
+        # First sample of the year
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp ASC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        first = cur.fetchone()
+
+        # Last sample of the year
+        cur.execute("""
+            SELECT *
+            FROM readings
+            WHERE timestamp BETWEEN ? AND ?
+            ORDER BY timestamp DESC
+            LIMIT 1;
+        """, (start_ts, end_ts))
+        last = cur.fetchone()
+
+        if not first or not last:
+            return {"error": "No data for this year"}
+
+        return compute_summary(first, last)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
