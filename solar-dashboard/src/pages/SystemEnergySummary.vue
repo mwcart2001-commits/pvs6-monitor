@@ -4,6 +4,11 @@
     <!-- Page Title -->
     <h1 class="text-3xl font-semibold tracking-tight">Current System Status</h1>
 
+    <!-- Energy Summary Card -->
+    <section class="bg-white rounded-xl shadow p-6 space-y-6">
+      <SystemEnergySummary />
+    </section>
+
     <!-- System Overview Section -->
     <section class="bg-white rounded-xl shadow p-6 space-y-6">
       <h2 class="text-xl font-medium text-gray-700">System Overview</h2>
