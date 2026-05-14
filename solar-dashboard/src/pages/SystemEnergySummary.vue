@@ -70,7 +70,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import SystemSummaryCard from '../components/SystemSummaryCard.vue'
+import SystemEnergySummary from '../components/SystemEnergySummary.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 import { useSystemSnapshot } from '../composables/useSystemSnapshot'
 
