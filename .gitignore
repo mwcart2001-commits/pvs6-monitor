@@ -12,6 +12,7 @@ __pycache__/
 *.sqlite
 *.sqlite.gz
 backups/
+logs/
 
 # Node/Vite
 node_modules/

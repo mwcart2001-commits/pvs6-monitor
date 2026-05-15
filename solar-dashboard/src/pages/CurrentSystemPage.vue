@@ -13,7 +13,6 @@
     <section class="bg-white rounded-xl shadow p-6 space-y-6">
       <h2 class="text-xl font-medium text-gray-700">System Overview</h2>
 
-      <!-- Summary Cards -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <SystemSummaryCard
           label="Solar Generation"
@@ -70,29 +69,23 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import SystemSummaryCard from '../components/SystemSummaryCard.vue'
 import SystemEnergySummary from '../components/SystemEnergySummary.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 import { useSystemSnapshot } from '../composables/useSystemSnapshot'
 
-/* -----------------------------
-   Load System Snapshot (FIXED)
------------------------------- */
-const { system, loading, error, loadSystem } = useSystemSnapshot()
-
-onMounted(() => {
-  loadSystem()
-})
-
-/* -----------------------------
-   Panel Metric Selector
------------------------------- */
-const selectedMetric = ref('ac_power_kw')
+const { system, loadSnapshot } = useSystemSnapshot()
 
 const metrics = [
-  { key: 'ac_power_kw', label: 'AC Power' },
-  { key: 'dc_power_kw', label: 'DC Power' },
-  { key: 'ac_voltage_v', label: 'Voltage' },
-  { key: 'heatsink_temp_c', label: 'Temperature' },
-  { key: 'health_score', label: 'Health Score' }
+  { key: 'power', label: 'Power (W)' },
+  { key: 'voltage', label: 'Voltage (V)' },
+  { key: 'current', label: 'Current (A)' },
+  { key: 'temperature', label: 'Temperature (°C)' }
 ]
+
+const selectedMetric = ref('power')
+
+onMounted(() => {
+  loadSnapshot()
+})
 </script>
