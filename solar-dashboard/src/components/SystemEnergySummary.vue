@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+console.log("SystemEnergySummary script loaded")
 import { ref, onMounted, watch } from 'vue'
 
 const tabs = ['Today', 'This Week', 'This Month', 'This Year']

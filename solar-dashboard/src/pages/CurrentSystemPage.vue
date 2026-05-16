@@ -74,7 +74,7 @@ import SystemEnergySummary from '../components/SystemEnergySummary.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 import { useSystemSnapshot } from '../composables/useSystemSnapshot'
 
-const { system, loadSnapshot } = useSystemSnapshot()
+const { system, loadSystem } = useSystemSnapshot()
 
 const metrics = [
   { key: 'power', label: 'Power (W)' },
@@ -86,6 +86,6 @@ const metrics = [
 const selectedMetric = ref('power')
 
 onMounted(() => {
-  loadSnapshot()
+  loadSystem()
 })
 </script>
