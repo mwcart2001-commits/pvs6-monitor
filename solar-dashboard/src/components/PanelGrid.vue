@@ -12,24 +12,26 @@
 
     <div v-else>
       <!-- Row 1 -->
-      <div class="flex gap-2">
+      <div class="flex flex-wrap justify-center gap-2">
         <PanelTile
           v-for="panel in row1Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
           :value="panel[metric] ?? '—'"
           :status="panel.status"
+          class="w-20 sm:w-24"
         />
       </div>
 
       <!-- Row 2 -->
-      <div class="flex gap-2">
+      <div class="flex flex-wrap justify-center gap-2">
         <PanelTile
           v-for="panel in row2Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
           :value="panel[metric] ?? '—'"
           :status="panel.status"
+          class="w-20 sm:w-24"
         />
       </div>
     </div>

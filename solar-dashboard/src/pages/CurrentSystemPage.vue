@@ -9,34 +9,6 @@
       <SystemEnergySummary />
     </section>
 
-    <!-- System Overview Section -->
-    <section class="bg-white rounded-xl shadow p-6 space-y-6">
-      <h2 class="text-xl font-medium text-gray-700">System Overview</h2>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SystemSummaryCard
-          label="Solar Generation"
-          :value="system?.solar_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Home Load"
-          :value="system?.load_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Net Power"
-          :value="system?.net_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Grid Import/Export"
-          :value="system?.grid_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-      </div>
-    </section>
-
     <!-- Panel Metric Selector -->
     <section class="space-y-4">
       <h2 class="text-xl font-medium text-gray-700">Panel Metrics</h2>
