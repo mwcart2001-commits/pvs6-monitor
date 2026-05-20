@@ -17,7 +17,7 @@
           v-for="panel in row1Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
-          :value="panel[metric] ?? '—'"
+          :value="panel[metricMap[metric]] ?? '—'"
           :status="panel.status"
           class="w-20 sm:w-24"
         />
@@ -29,7 +29,7 @@
           v-for="panel in row2Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
-          :value="panel[metric] ?? '—'"
+          :value="panel[metricMap[metric]] ?? '—'"
           :status="panel.status"
           class="w-20 sm:w-24"
         />
@@ -54,6 +54,13 @@ const props = defineProps({
 
 /* Load real panel data */
 const { panels, loading, error } = usePanels()
+
+const metricMap = {
+  power: 'ac_power',
+  voltage: 'voltage',
+  current: 'dc_power',
+  temperature: 'temperature'
+}
 
 /* Split into rows based on physical label */
 const row1Panels = computed(() =>
