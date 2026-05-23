@@ -18,6 +18,10 @@
       >
         {{ tab }}
       </button>
+      <!-- Temporary test button -->
+      <button class="bg-blue-600 text-white px-3 py-2 rounded-lg">
+        Test
+      </button>
     </div>
 
     <!-- Loading -->
@@ -120,5 +124,9 @@ async function fetchSummary() {
 }
 
 onMounted(fetchSummary)
-watch(activeTab, fetchSummary)
+
+watch(activeTab, () => {
+  console.log("ACTIVE TAB:", activeTab.value)
+  fetchSummary()
+})
 </script>

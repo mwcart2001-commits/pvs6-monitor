@@ -1,0 +1,5 @@
+@import "tailwindcss";
+
+/* Correct absolute paths for your Pi */
+@source "/home/pi/pvs6-monitor/solar-dashboard/index.html";
+@source "/home/pi/pvs6-monitor/solar-dashboard/src/**/*.{vue,js,ts}";

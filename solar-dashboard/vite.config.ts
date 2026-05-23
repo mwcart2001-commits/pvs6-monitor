@@ -16,6 +16,8 @@ export default defineConfig({
     },
   },
   server: {
+    host: true,          // ⭐ THIS exposes Vite to your LAN ⭐
+    port: 5173,          // optional but recommended
     proxy: {
       '/api': {
         target: 'http://localhost:8000',

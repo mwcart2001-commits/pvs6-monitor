@@ -17,7 +17,16 @@
           v-for="panel in row1Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
-          :value="panel[metricMap[metric]] ?? '—'"
+          :value="metric === 'power'
+            ? (panel[metricMap[metric]] * 1000).toFixed(0)
+            : panel[metricMap[metric]] ?? '—'"
+          :unit="metric === 'power'
+            ? 'W'
+            : metric === 'voltage'
+              ? 'V'
+              : metric === 'current'
+                ? 'A'
+                : '°C'"
           :status="panel.status"
           class="w-20 sm:w-24"
         />
@@ -29,7 +38,16 @@
           v-for="panel in row2Panels"
           :key="panel.physical_label"
           :label="panel.physical_label"
-          :value="panel[metricMap[metric]] ?? '—'"
+          :value="metric === 'power'
+            ? (panel[metricMap[metric]] * 1000).toFixed(0)
+            : panel[metricMap[metric]] ?? '—'"
+          :unit="metric === 'power'
+            ? 'W'
+            : metric === 'voltage'
+              ? 'V'
+              : metric === 'current'
+                ? 'A'
+                : '°C'"
           :status="panel.status"
           class="w-20 sm:w-24"
         />
@@ -40,7 +58,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import PanelTile from './PanelTile.vue'
 import { usePanels } from '../composables/usePanels'
 
@@ -56,10 +74,10 @@ const props = defineProps({
 const { panels, loading, error } = usePanels()
 
 const metricMap = {
-  power: 'ac_power',
-  voltage: 'voltage',
-  current: 'dc_power',
-  temperature: 'temperature'
+  power: 'ac_power_kw',
+  voltage: 'ac_voltage_v',
+  current: 'ac_current_a',
+  temperature: 'heatsink_temp_c'
 }
 
 /* Split into rows based on physical label */
@@ -70,6 +88,11 @@ const row1Panels = computed(() =>
 const row2Panels = computed(() =>
   panels.value.filter(p => p.physical_label?.startsWith('R2'))
 )
+
+watch(panels, () => {
+  console.log("PANELS:", JSON.stringify(panels.value, null, 2))
+})
+
 </script>
 
 <style scoped>

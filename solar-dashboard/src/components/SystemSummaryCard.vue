@@ -104,6 +104,7 @@ async function loadSummary() {
 
 // Load initial tab
 loadSummary();
+
 </script>
 
 <style scoped>

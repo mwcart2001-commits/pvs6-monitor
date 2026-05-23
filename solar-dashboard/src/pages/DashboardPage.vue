@@ -22,6 +22,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div class="bg-red-500 text-white p-4">TEST COLOR</div>
   <!-- ⭐ Mode Badge -->
   <div class="mode-badge" :class="mode">
     {{ mode.toUpperCase() }} MODE
