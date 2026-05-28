@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from datetime import datetime, timedelta
-from .queries import get_latest_panels
 
 from .models import SystemSnapshot, PanelSnapshot
 from .queries import (
