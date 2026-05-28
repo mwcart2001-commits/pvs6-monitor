@@ -4,6 +4,7 @@
       <button
         v-for="t in tabs"
         :key="t.key"
+        :disabled="t.key === activeTab"
         :class="{ active: t.key === activeTab }"
         @click="setTab(t.key)"
       >
@@ -40,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const tabs = [
   { key: "day", label: "Today" },
@@ -50,13 +51,27 @@ const tabs = [
 ];
 
 const activeTab = ref("day");
-const summary = ref({});
+
+const summary = ref({
+  production_kwh: 0,
+  consumption_kwh: 0,
+  grid_import_kwh: 0,
+  grid_export_kwh: 0,
+  net_kwh: 0
+});
+
 const loading = ref(false);
 const error = ref("");
 
+const endpoints = {
+  day: () => `/api/summary/daily?date=${new Date().toISOString().slice(0, 10)}`,
+  week: () => `/api/summary/weekly?date=${new Date().toISOString().slice(0, 10)}`,
+  month: () => `/api/summary/monthly?date=${new Date().toISOString().slice(0, 10)}`,
+  year: () => `/api/summary/yearly?date=${new Date().getFullYear()}`
+};
+
 function setTab(tab) {
   activeTab.value = tab;
-  loadSummary();
 }
 
 async function loadSummary() {
@@ -64,29 +79,7 @@ async function loadSummary() {
   error.value = "";
 
   try {
-    const now = new Date();
-    let url = "";
-
-    if (activeTab.value === "day") {
-      const date = now.toISOString().slice(0, 10);
-      url = `/api/summary/daily?date=${date}`;
-    }
-
-    if (activeTab.value === "week") {
-      const date = now.toISOString().slice(0, 10);
-      url = `/api/summary/weekly?date=${date}`;
-    }
-
-    if (activeTab.value === "month") {
-      const date = now.toISOString().slice(0, 10);
-      url = `/api/summary/monthly?date=${date}`;
-    }
-
-    if (activeTab.value === "year") {
-      const year = now.getFullYear();
-      url = `/api/summary/yearly?date=${year}`;
-    }
-
+    const url = endpoints[activeTab.value]();
     const res = await fetch(url);
     const data = await res.json();
 
@@ -95,16 +88,17 @@ async function loadSummary() {
     } else {
       summary.value = data;
     }
-  } catch (e) {
+  } catch {
     error.value = "Failed to load summary";
   }
 
   loading.value = false;
 }
 
-// Load initial tab
-loadSummary();
+watch(activeTab, loadSummary);
 
+// initial load
+loadSummary();
 </script>
 
 <style scoped>
@@ -135,6 +129,11 @@ loadSummary();
   color: white;
 }
 
+.tabs button:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
 .loading,
 .error {
   padding: 12px;
@@ -150,6 +149,7 @@ loadSummary();
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
+  animation: fadeIn .25s ease-out;
 }
 
 .item label {
@@ -160,5 +160,10 @@ loadSummary();
 .item span {
   font-size: 18px;
   font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0 }
+  to { opacity: 1 }
 }
 </style>
