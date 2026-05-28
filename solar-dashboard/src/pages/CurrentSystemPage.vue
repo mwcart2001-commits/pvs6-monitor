@@ -52,7 +52,7 @@ const metrics = [
   { key: 'power', label: 'Power (W)' },
   { key: 'voltage', label: 'Voltage (V)' },
   { key: 'current', label: 'Current (A)' },
-  { key: 'temperature', label: 'Temperature (°C)' }
+  { key: 'temperature', label: 'Temperature (°F)' }
 ]
 
 const selectedMetric = ref('power')
