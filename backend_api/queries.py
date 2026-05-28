@@ -67,7 +67,6 @@ def _get_latest_panel_count():
 
 DB_PATH = "/home/pi/pvs6-monitor/pvs6_data.db"
 
-
 def get_latest_panels():
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
@@ -97,6 +96,7 @@ def get_latest_panels():
     rows = cur.fetchall()
     conn.close()
     return rows
+
 
 def get_day_history(date_str: str):
     day_start = datetime.fromisoformat(date_str)
