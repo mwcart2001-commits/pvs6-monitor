@@ -18,10 +18,12 @@ export default defineConfig({
   server: {
     host: true,          // ⭐ THIS exposes Vite to your LAN ⭐
     port: 5173,          // optional but recommended
+    allowedHosts: ['pvs6-pi.taildcc9dd.ts.net'],
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'https://pvs6-pi.taildcc9dd.ts.net:8444',
         changeOrigin: true,
+        secure: false
       }
     }
   }

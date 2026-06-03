@@ -27,7 +27,7 @@ let chart = null;
 const selectedDate = ref(new Date().toISOString().slice(0, 10));
 
 async function fetchHourly(date) {
-  const url = `http://192.168.1.225:8000/api/history/day/hourly?date=${date}`;
+  const url = `/api/history/day/hourly?date=${date}`
   const res = await fetch(url);
   return await res.json();
 }
