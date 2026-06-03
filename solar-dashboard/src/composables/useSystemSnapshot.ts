@@ -1,8 +1,14 @@
 import { ref, onMounted } from 'vue'
 
+// ⭐ Add this at the top-level (same indentation as export function)
+function cToF(c: number) {
+  return (c * 9) / 5 + 32
+}
+
 export function useSystemSnapshot() {
   console.log('🔥 CurrentSystemPage.vue is running')
-  console.log('useSystemSnapshot() called')  
+  console.log('useSystemSnapshot() called')
+
   const system = ref(null)
   const loading = ref(true)
   const error = ref<string | null>(null)
@@ -20,7 +26,12 @@ export function useSystemSnapshot() {
       const json = await res.json()
       console.log('SYSTEM FETCH JSON:', json)
 
-      system.value = json
+      // ⭐ Your indentation here is correct
+      system.value = {
+        ...json,
+        temperature_f: json.temperature_c != null ? cToF(json.temperature_c) : null
+      }
+
     } catch (err) {
       if (err instanceof Error) {
         error.value = err.message
@@ -32,9 +43,7 @@ export function useSystemSnapshot() {
     }
   }
 
-  // ⬅️ THIS MUST BE OUTSIDE loadSystem()
   onMounted(loadSystem)
 
-  // ⬅️ THIS MUST ALSO BE OUTSIDE loadSystem()
   return { system, loading, error, loadSystem }
 }

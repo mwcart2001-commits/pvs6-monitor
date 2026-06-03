@@ -4,33 +4,9 @@
     <!-- Page Title -->
     <h1 class="text-3xl font-semibold tracking-tight">Current System Status</h1>
 
-    <!-- System Overview Section -->
+    <!-- Energy Summary Card -->
     <section class="bg-white rounded-xl shadow p-6 space-y-6">
-      <h2 class="text-xl font-medium text-gray-700">System Overview</h2>
-
-      <!-- Summary Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SystemSummaryCard
-          label="Solar Generation"
-          :value="system?.solar_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Home Load"
-          :value="system?.load_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Net Power"
-          :value="system?.net_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-        <SystemSummaryCard
-          label="Grid Import/Export"
-          :value="system?.grid_kw?.toFixed(2) ?? '—'"
-          unit="kW"
-        />
-      </div>
+      <SystemEnergySummary />
     </section>
 
     <!-- Panel Metric Selector -->
@@ -66,28 +42,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import SystemSummaryCard from '../components/SystemSummaryCard.vue'
+import SystemEnergySummary from '../components/SystemEnergySummary.vue'
 import PanelGrid from '../components/PanelGrid.vue'
 import { useSystemSnapshot } from '../composables/useSystemSnapshot'
 
-/* -----------------------------
-   Load System Snapshot (FIXED)
------------------------------- */
-const { system, loading, error, loadSystem } = useSystemSnapshot()
+const { system, loadSystem } = useSystemSnapshot()
+
+const metrics = [
+  { key: 'power', label: 'Power (W)' },
+  { key: 'voltage', label: 'Voltage (V)' },
+  { key: 'current', label: 'Current (A)' },
+  { key: 'temperature', label: 'Temperature (°F)' }
+]
+
+const selectedMetric = ref('power')
 
 onMounted(() => {
   loadSystem()
 })
-
-/* -----------------------------
-   Panel Metric Selector
------------------------------- */
-const selectedMetric = ref('ac_power_kw')
-
-const metrics = [
-  { key: 'ac_power_kw', label: 'AC Power' },
-  { key: 'dc_power_kw', label: 'DC Power' },
-  { key: 'ac_voltage_v', label: 'Voltage' },
-  { key: 'heatsink_temp_c', label: 'Temperature' },
-  { key: 'health_score', label: 'Health Score' }
-]
 </script>

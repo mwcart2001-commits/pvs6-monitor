@@ -131,12 +131,18 @@ def api_system_current():
 
     ts, solar, load, grid = row
 
+    # ⭐ NEW: get panel temperatures
+    panels = get_latest_panels()
+    temps = [p["heatsink_temp_c"] for p in panels if p["heatsink_temp_c"] is not None]
+    avg_temp_c = sum(temps) / len(temps) if temps else None
+
     return {
         "timestamp": ts,
         "solar_kw": solar,
         "load_kw": load,
         "net_kw": solar - load,
-        "grid_kw": grid
+        "grid_kw": grid,
+        "temperature_c": avg_temp_c   # ⭐ NEW FIELD
     }
 
 
