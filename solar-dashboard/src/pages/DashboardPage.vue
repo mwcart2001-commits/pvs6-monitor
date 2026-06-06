@@ -2,6 +2,9 @@
 import { ref, onMounted } from "vue";
 import DailyChart from "../components/DailyChart.vue";
 import DailyHourlyChart from "../components/DailyHourlyChart.vue";
+import CurrentPowerStatus from "../components/CurrentPowerStatus.vue"
+import EnergySummary from "../components/EnergySummary.vue"
+</script>
 
 const view = ref("hourly");
 //const view = ref("power");
@@ -23,6 +26,7 @@ onMounted(async () => {
 
 <template>
   <div class="bg-red-500 text-white p-4">TEST COLOR</div>
+
   <!-- ⭐ Mode Badge -->
   <div class="mode-badge" :class="mode">
     {{ mode.toUpperCase() }} MODE
@@ -57,11 +61,18 @@ onMounted(async () => {
       </button>
     </div>
 
+    <!-- NEW: Real-time power status -->
+    <CurrentPowerStatus />
+
+    <!-- NEW: Daily/Weekly/Monthly/Yearly summary -->
+    <EnergySummary />
+
     <!-- Chart Display -->
     <div>
       <DailyHourlyChart v-if="view === 'hourly'" />
       <DailyChart v-if="view === 'power'" />
     </div>
+
   </div>
 </template>
 
